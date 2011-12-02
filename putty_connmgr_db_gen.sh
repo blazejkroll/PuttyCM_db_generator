@@ -7,8 +7,8 @@ OUTPUT_FILE="putty_db.xml"
 
 HEADER="<?xml version=\"1.0\" encoding=\"utf-16\"?>
 <configuration version=\"0.7.1.136\" savepassword=\"True\">
-  <root type=\"database\" name=\"TietoHosts\" expanded=\"True\">
-      <container type=\"folder\" name=\"TietoTargets\" expanded=\"True\">
+  <root type=\"database\" name=\"Hosts\" expanded=\"True\">
+      <container type=\"folder\" name=\"Targets\" expanded=\"True\">
 "
 
 FOOTER="
@@ -51,8 +51,8 @@ BODY_TEMP="<connection type=\"PuTTY\" name=\"$name ($ip, $host)\">
 				   <commandtimeout>750</commandtimeout>
 			 </timeout>
 			 <command>
-				   <command1>su -</command1>
-				   <command2>rastre1</command2>
+				   <command1 />
+				   <command2 />
 				   <command3 />
 				   <command4 />
 				   <command5 />
