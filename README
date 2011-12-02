@@ -1,1 +1,10 @@
-This is my first readme file stored on git.
+This is a script for generating database with hosts (in xml file) to be imported to Putty Connection Manager. It works with PuTTY Connection Manager ver. 0.7.1 BETA (build 136).
+PuTTY Connection Manager is a freeware software authored by Damien Rigoudy
+
+The input.txt file contains the following data separated with semicolon:
+<host_name>;<my_machineName>;<host_ip>
+
+e.g.
+HP-01;MyTargetMachine;192.168.1.21
+
+
