@@ -1,73 +1,31 @@
-#!/bin/sh
-#This is a script for generating database with hosts (in xml file) to be imported to Putty Connection Manager. It works with PuTTY Connection Manager ver. 0.7.1 BETA (build 136).
+#!/bin/bash -x
+# This is a script for generating database with hosts (in xml file) to be imported to Putty Connection Manager.
+# It was tested on PuTTY Connection Manager ver. 0.7.1 BETA (build 136).
+#
 # PuTTY Connection Manager is a freeware software authored by Damien Rigoudy
 
-FILE=`less input.txt`
+FILE=`less ./input.txt`
 OUTPUT_FILE="putty_db.xml"
-
-HEADER="<?xml version=\"1.0\" encoding=\"utf-16\"?>
-<configuration version=\"0.7.1.136\" savepassword=\"True\">
-  <root type=\"database\" name=\"Hosts\" expanded=\"True\">
-      <container type=\"folder\" name=\"Targets\" expanded=\"True\">
-"
-
-FOOTER="
-</container>
-    <container type=\"folder\" name=\"Telnet\" expanded=\"True\" />
-	  </root>
-	  </configuration> "
-
+HEADER=`less ./templates/xml_header.txt`
+FOOTER=`less ./templates/xml_footer.txt`
 BODY=""
 
 for line in $FILE; do
-	
- set -- "$line" 
- IFS=";"; declare -a Array=($*)
- host=${Array[0]};
- name=${Array[1]};
- ip=${Array[2]};
+ data=`echo $line | tr ";" " "`
+ dataArray=( $data )
 
-echo "name: $name, host: $host, ip:  $ip"; 
+ host=${dataArray[0]};
+ name=${dataArray[1]};
+ ip=${dataArray[2]};
+ 
+ BODY_FILE='./templates/xml_body.txt'
+ BODY_TEMP=`eval "cat <<EOF
+ $(<$BODY_FILE)
+ EOF
+ " 2> /dev/null`
 
-BODY_TEMP="<connection type=\"PuTTY\" name=\"$name ($ip, $host)\">
-	        <connection_info>
-			   <name>$name ($ip, $host)</name>
-			       <protocol>SSH</protocol>
-				   <host>$ip</host>
-				   <port>22</port>
-				    <session>Default Settings</session>
-				    <commandline />
-				   <description />
-			</connection_info>
-			<login>
-				    <login>Nemuadmin</login>
-				    <password>nemuuser</password>
-				    <prompt />
-			</login>
-			 <timeout>
-				   <connectiontimeout>1000</connectiontimeout>
-				   <logintimeout>750</logintimeout>
-				   <passwordtimeout>750</passwordtimeout>
-				   <commandtimeout>750</commandtimeout>
-			 </timeout>
-			 <command>
-				   <command1 />
-				   <command2 />
-				   <command3 />
-				   <command4 />
-				   <command5 />
-			  </command>
-			  <options>
-				   <loginmacro>True</loginmacro>
-				   <postcommands>True</postcommands>
-				   <endlinechar>10</endlinechar>
-			  </options>
-	 </connection>
-"
-
-echo $BODY_TEMP;
-BODY="$BODY
-$BODY_TEMP"
+ BODY="$BODY
+       $BODY_TEMP"
 done 
 
 echo $HEADER > $OUTPUT_FILE;

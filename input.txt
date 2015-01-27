@@ -1,1 +1,2 @@
 HP-01;MyTargetMachine;192.168.1.21
+CISCO-01;SecondTargetHost;192.168.2.13
